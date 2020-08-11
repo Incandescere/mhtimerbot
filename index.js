@@ -65,7 +65,7 @@ const seasonalGarden = async ()=>{
             return document.querySelector('div > table > tbody > tr:nth-child(6) > td:nth-child(6)').innerText
         })
         await page.close()
-        return await `${time}\n\nCurrent season is ${season} for another ${seasonLeft}\n\nSeason changes on ${nextSeasonDay} at ${nextSeasonTime}`
+        return await `${time}\n\nCurrent season is ${season} ending in ${seasonLeft}\n\nSeason changes on ${nextSeasonDay} at ${nextSeasonTime}`
     } 
     
     return (await sendmsg())
@@ -86,7 +86,6 @@ bot.command('sg', async (ctx)=>{
     ctx.reply('fetching latest info...')
     ctx.reply(await seasonalGarden())
 })
-
 
 //bot.launch()
 module.exports=bot
