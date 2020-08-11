@@ -87,5 +87,9 @@ bot.command('sg', async (ctx)=>{
     ctx.reply(await seasonalGarden())
 })
 
+// bot.command('help', async (ctx)=>{
+//     ctx.reply
+// })
+
 //bot.launch()
 module.exports=bot
