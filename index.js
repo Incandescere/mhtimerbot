@@ -141,7 +141,7 @@ const balacksCove = async ()=>{
         })
        
         await page.close()
-        return await `${time}\n\nThe tide is ${tide} for another ${changesIn}\n\n${nextTide.slice(10, nextTide.length-1)} at ${nextTideTime} on ${nextTideDay}`
+        return await `${time}\n\nThe tide is ${tide} for another ${changesIn}\n\n${nextTide.slice(11, nextTide.length-1)} at ${nextTideTime} on ${nextTideDay}`
     } 
     return (await sendmsg())
 }
