@@ -3,13 +3,15 @@ const puppeteer = require("puppeteer");
 //const Telegraf=require('telegraf');
 const {Composer}  = require('micro-bot')
 
-//const bot = new Telegraf('i dont think so')
+//const bot = new Telegraf('1160311103:AAFpD41d7v7jaf8ECHTXS9WX_zVZKtVkHGI')
 const bot = new Composer
+
+const headlessness = true
 
 const seasonalGarden = async ()=>{
     
     // open the headless browser
-    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:true })
+    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:headlessness })
 
     // open a new page
     var page = await browser.newPage()
@@ -78,7 +80,7 @@ const seasonalGarden = async ()=>{
 const balacksCove = async ()=>{
     
     // open the headless browser
-    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:true })
+    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:headlessness })
 
     // open a new page
     var page = await browser.newPage()
@@ -149,7 +151,7 @@ const balacksCove = async ()=>{
 const forbiddenGrove = async ()=>{
     
     // open the headless browser
-    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:true })
+    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:headlessness })
 
     // open a new page
     var page = await browser.newPage()
@@ -214,9 +216,81 @@ const forbiddenGrove = async ()=>{
     return (await sendmsg())
 }
 
+const toxicSpill = async ()=>{
+    
+    // open the headless browser
+    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:headlessness })
+
+    // open a new page
+    var page = await browser.newPage()
+
+    //link is mhtimers for gmt +8, Singapore time
+    const url = 'https://sites.google.com/site/mhtimerslinks/8'
+
+    await page.goto(url, {waitUntil:"networkidle2"})
+
+    var fLayer = async ()=>{
+        return await page.evaluate(()=>{
+            var fLink = document.querySelector('#sites-canvas-main-content > div > table > tbody > tr > td.sites-layout-tile.sites-tile-name-content-1 > div > div.sites-embed-align-left-wrapping-off > div > div>iframe').src
+            return fLink
+        })
+    }
+
+    var first = await fLayer()
+    //console.log(first)
+
+    await page.goto((first), {waitUntil:"networkidle2"})
+
+    var sLayer = async ()=>{
+        return await page.evaluate(()=>{
+            var sLink = document.querySelector('#dest > iframe').src.trim()
+            return sLink
+        })
+    }
+    
+    var second = await sLayer()
+    //console.log(second)
+
+    await page.goto((second), {waitUntil:"networkidle2"})
+
+    var sendmsg = async ()=>{
+        var time = await page.evaluate(()=>{
+            var timeArr = []
+            document.querySelectorAll('td.s4').forEach(x=>{
+                timeArr.push(x.innerText.trim()+' ')
+            })
+            return timeArr.join(' ')
+        })
+
+        var level = await page.evaluate(()=>{
+            return document.querySelector('td.s41').innerText
+        })
+
+        var timeLeft = await page.evaluate(()=>{
+            return document.querySelector('div > table > tbody > tr:nth-child(37) > td.s14').innerText
+        })
+
+        var changeTime = await page.evaluate(()=>{
+            return document.querySelector('div > table > tbody > tr:nth-child(37) > td:nth-child(6)').innerText
+        })
+
+        var changeDay = await page.evaluate(()=>{
+            return document.querySelector('div > table > tbody > tr:nth-child(37) > td:nth-child(8)').innerText
+        })
+
+        var nextLevel = await page.evaluate(()=>{
+            return document.querySelector('div > table > tbody > tr:nth-child(37) > td.s11').innerText
+        })
+       
+        await page.close()
+        return await `${time}\n\nToxic Spill level: ${level} for another ${timeLeft}\n\n${nextLevel.slice(11,nextLevel.length-1)} at ${changeTime} on ${changeDay}`
+    } 
+    return (await sendmsg())
+}
+
 
 var about = ()=>{
-    return `Made by @EtherealDrift\n\nGithub repo: https://github.com/Incandescere/MHTImerBot`
+    return `Made by @EtherealDrift\nGithub repo: https://github.com/Incandescere/MHTImerBot`
 }
 
 var startText = ()=>{
@@ -224,7 +298,7 @@ var startText = ()=>{
 }
 
 var helpText = ()=>{
-    return `/sg for Seasonal Garden Timers\n/cove for Balack's Cove Timers\n/fg for Forbidden Grove Timers\n`
+    return `/sg for Seasonal Garden Timers\n/cove for Balack's Cove Timers\n/fg for Forbidden Grove Timers\n/toxic for Toxic Spill Timers`
 }
 
 bot.command('start', (ctx)=>{
@@ -261,6 +335,12 @@ bot.command('fg', async (ctx)=>{
     console.log('fg cmd recd')
     ctx.reply('fetching latest info...')
     ctx.reply(await forbiddenGrove())
+})
+
+bot.command('toxic', async (ctx)=>{
+    console.log('toxic cmd recd')
+    ctx.reply('fetching latest info...')
+    ctx.reply(await toxicSpill())
 })
 
 //bot.launch()
