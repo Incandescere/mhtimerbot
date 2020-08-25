@@ -5,8 +5,8 @@ const devMode = false
 const Telegraf=require('telegraf');
 const {Composer}  = require('micro-bot')
 
-const bot = (devMode)? new Telegraf('1160311103:AAFpD41d7v7jaf8ECHTXS9WX_zVZKtVkHGI'):new Composer
-//const bot = new Composer
+//const bot = new Telegraf('1160311103:AAFpD41d7v7jaf8ECHTXS9WX_zVZKtVkHGI')
+const bot = new Composer
 
 const seasonalGarden = async ()=>{
     
@@ -343,8 +343,5 @@ bot.command('toxic', async (ctx)=>{
     ctx.reply(await toxicSpill())
 })
 
-if(devMode){
-    bot.launch()
-} else {
-    module.exports=bot
-}
+//bot.launch()
+module.exports=bot
