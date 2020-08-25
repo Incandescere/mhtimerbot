@@ -1,12 +1,12 @@
 const puppeteer = require("puppeteer");
 
-//const Telegraf=require('telegraf');
-const {Composer}  = require('micro-bot')
+const Telegraf=require('telegraf');
+//const {Composer}  = require('micro-bot')
 
-//const bot = new Telegraf('1160311103:AAFpD41d7v7jaf8ECHTXS9WX_zVZKtVkHGI')
-const bot = new Composer
+const bot = new Telegraf('1160311103:AAFpD41d7v7jaf8ECHTXS9WX_zVZKtVkHGI')
+//const bot = new Composer
 
-const headlessness = true
+const headlessness = false
 
 const seasonalGarden = async ()=>{
     
@@ -263,7 +263,7 @@ const toxicSpill = async ()=>{
         })
 
         var level = await page.evaluate(()=>{
-            return document.querySelector('td.s41').innerText
+            return document.querySelector('td.s42').innerText
         })
 
         var timeLeft = await page.evaluate(()=>{
@@ -343,5 +343,5 @@ bot.command('toxic', async (ctx)=>{
     ctx.reply(await toxicSpill())
 })
 
-//bot.launch()
-module.exports=bot
+bot.launch()
+//module.exports=bot
