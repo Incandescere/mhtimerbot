@@ -1,17 +1,17 @@
 const puppeteer = require("puppeteer");
 
-const devMode = false
-
-const Telegraf=require('telegraf');
+//const Telegraf=require('telegraf');
 const {Composer}  = require('micro-bot')
 
 //const bot = new Telegraf('1160311103:AAFpD41d7v7jaf8ECHTXS9WX_zVZKtVkHGI')
 const bot = new Composer
 
+const headlessness = true
+
 const seasonalGarden = async ()=>{
     
     // open the headless browser
-    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:devMode })
+    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:headlessness })
 
     // open a new page
     var page = await browser.newPage()
@@ -80,7 +80,7 @@ const seasonalGarden = async ()=>{
 const balacksCove = async ()=>{
     
     // open the headless browser
-    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:devMode })
+    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:headlessness })
 
     // open a new page
     var page = await browser.newPage()
@@ -151,7 +151,7 @@ const balacksCove = async ()=>{
 const forbiddenGrove = async ()=>{
     
     // open the headless browser
-    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:devMode })
+    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:headlessness })
 
     // open a new page
     var page = await browser.newPage()
@@ -219,7 +219,7 @@ const forbiddenGrove = async ()=>{
 const toxicSpill = async ()=>{
     
     // open the headless browser
-    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:devMode })
+    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:headlessness })
 
     // open a new page
     var page = await browser.newPage()
