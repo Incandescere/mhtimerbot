@@ -1,17 +1,18 @@
 const puppeteer = require("puppeteer");
 
-//const Telegraf=require('telegraf');
+const Telegraf=require('telegraf');
 const {Composer}  = require('micro-bot')
 
-//const bot = new Telegraf('1160311103:AAFpD41d7v7jaf8ECHTXS9WX_zVZKtVkHGI')
+const devmode = false;
+
+//const bot = new Telegraf('1160311103:AAFpD41d7v7jaf8ECHTXS9WX_zVZKtVkHGI') 
 const bot = new Composer
 
-const headlessness = true
 
 const seasonalGarden = async ()=>{
     
     // open the headless browser
-    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:headlessness })
+    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:!devmode })
 
     // open a new page
     var page = await browser.newPage()
@@ -80,7 +81,7 @@ const seasonalGarden = async ()=>{
 const balacksCove = async ()=>{
     
     // open the headless browser
-    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:headlessness })
+    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:!devmode })
 
     // open a new page
     var page = await browser.newPage()
@@ -151,7 +152,7 @@ const balacksCove = async ()=>{
 const forbiddenGrove = async ()=>{
     
     // open the headless browser
-    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:headlessness })
+    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:!devmode })
 
     // open a new page
     var page = await browser.newPage()
@@ -219,7 +220,7 @@ const forbiddenGrove = async ()=>{
 const toxicSpill = async ()=>{
     
     // open the headless browser
-    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:headlessness })
+    var browser = await puppeteer.launch({ args: ['--no-sandbox'], headless:!devmode })
 
     // open a new page
     var page = await browser.newPage()
@@ -288,6 +289,11 @@ const toxicSpill = async ()=>{
     return (await sendmsg())
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const duration = 2000
 
 var about = ()=>{
     return `Made by @EtherealDrift\nGithub repo: https://github.com/Incandescere/MHTImerBot`
@@ -298,16 +304,26 @@ var startText = ()=>{
 }
 
 var helpText = ()=>{
-    return `/sg for Seasonal Garden Timers\n/cove for Balack's Cove Timers\n/fg for Forbidden Grove Timers\n/toxic for Toxic Spill Timers`
+    return '/timers for timers'
+}
+
+var helpMe = ()=>{
+    return 'I\'m not just poor, son. I\'m destitute.\n\nhttps://www.mousehuntgame.com/supplytransfer.php?fid=1000023506993941'
 }
 
 bot.command('start', (ctx)=>{
     ctx.reply(startText())
 })
 
+
 bot.command('donate', (ctx)=>{
     console.log('donate recd')
-    ctx.reply('I\'m not just poor, son. I\'m destitute.\n\nhttps://www.mousehuntgame.com/supplytransfer.php?fid=100002350699394')
+    ctx.reply(helpMe())
+})
+
+bot.command('dodog', (ctx)=>{
+    console.log('dodog recd')
+    ctx.reply('https://www.mousehuntgame.com/profile.php?snuid=1578463878')
 })
 
 bot.command('about', (ctx)=>{
@@ -319,29 +335,45 @@ bot.command('help', async (ctx)=>{
     ctx.reply(helpText())
 })
 
-bot.command('sg', async (ctx)=>{
+bot.command('timers', (ctx)=>{
+    console.log('timers recd')
+    ctx.reply('Select Location', {
+        reply_markup: {
+            inline_keyboard: [
+                [{text: 'Seasonal Garden', callback_data: "SG"},
+                {text: 'Balack\'s Cove', callback_data: "BC"}],
+                [{text: 'Forbidden Grove', callback_data: "FG"},
+                {text: 'Toxic Spill', callback_data: "TX"}]
+            ]
+        }
+    })
+})
+
+
+bot.action('SG', async (ctx)=>{
     console.log('sg cmd recd')
     ctx.reply('fetching latest info...')
     ctx.reply(await seasonalGarden())
 })
 
-bot.command('cove', async (ctx)=>{
+bot.action('BC', async (ctx)=>{
     console.log('cove cmd recd')
     ctx.reply('fetching latest info...')
     ctx.reply(await balacksCove())
 })
 
-bot.command('fg', async (ctx)=>{
+bot.action('FG', async (ctx)=>{
     console.log('fg cmd recd')
     ctx.reply('fetching latest info...')
     ctx.reply(await forbiddenGrove())
 })
 
-bot.command('toxic', async (ctx)=>{
+bot.action('TX', async (ctx)=>{
     console.log('toxic cmd recd')
     ctx.reply('fetching latest info...')
     ctx.reply(await toxicSpill())
 })
+
 
 //bot.launch()
 module.exports=bot
